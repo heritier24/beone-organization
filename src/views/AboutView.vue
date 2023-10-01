@@ -1,5 +1,14 @@
 <template>
-  <div class="about">
-    <h1>This is an about page</h1>
-  </div>
+<SideMenuAdmin />
+  <MainContentAbout />
 </template>
+<script>
+import SideMenuAdmin from '../components/SideMenuAdmin.vue'
+import MainContentAbout from '../components/MainContentAbout.vue'
+export default {
+  components: {
+    SideMenuAdmin,
+    MainContentAbout
+  }
+}
+</script>
