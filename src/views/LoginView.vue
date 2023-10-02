@@ -96,11 +96,19 @@
                   <!-- End of Form -->
                 </div>
                 <div class="d-grid">
-                  <button type="button" class="btn btn-gray-800" @click="loginBtn();">
+                  <button type="button" class="btn btn-gray-800">
                     Sign in
                   </button>
                 </div>
               </form>
+              <div
+                class="d-flex justify-content-center align-items-center mt-4"
+              >
+                <span class="fw-normal">
+                  Not registered?
+                  <button type="button" class="btn btn-gray-700" @click="signUp();">Create account</button >
+                </span>
+              </div>
             </div>
           </div>
         </div>
@@ -113,6 +121,9 @@ export default {
   methods: {
     loginBtn () {
       this.$router.push('/home-admin')
+    },
+    signUp () {
+      this.$router.push('/sign-up')
     }
   }
 }
