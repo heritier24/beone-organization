@@ -96,7 +96,7 @@
                   <!-- End of Form -->
                 </div>
                 <div class="d-grid">
-                  <button type="button" class="btn btn-gray-800">
+                  <button type="button" class="btn btn-gray-800" @click="loginBtn">
                     Sign in
                   </button>
                 </div>
