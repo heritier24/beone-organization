@@ -7,10 +7,14 @@
             <div :class="iconBox">
               <!-- <div class="icon"><i class="bx bxl-dribbble"></i></div> -->
               <br />
-              <h4 class="title"><a href="">{{ title }}</a></h4>
+              <h4 class="title"><a href="">{{ title }}</a><span hidden>{{ id }}</span></h4>
               <p :class="descriptionClass">
                 {{ description }}
               </p>
+              <div>
+                <button type="button" class="btn btn-success" @click="updateService();">Update</button>
+                <button type="button" class="btn btn-danger" style="margin-left:5px;" @click="deleteService();">Delete</button>
+            </div>
             </div>
           </div>
 </template>
@@ -40,6 +44,30 @@ export default {
     descriptionClass: {
       type: String,
       default: 'description'
+    },
+    id: {
+      type: String,
+      default: ''
+    }
+  },
+  methods: {
+    updateService () {
+      const serviceId = this.id
+      const title = this.title
+      const description = this.description
+      this.$store.commit('setServiceId', serviceId)
+      this.$store.commit('setTitle', title)
+      this.$store.commit('setDescription', description)
+      this.$emit('updateService')
+    },
+    deleteService () {
+      const serviceId = this.id
+      const title = this.title
+      const description = this.description
+      this.$store.commit('setServiceId', serviceId)
+      this.$store.commit('setTitle', title)
+      this.$store.commit('setDescription', description)
+      this.$emit('deleteService')
     }
   }
 }
