@@ -58,13 +58,16 @@
     <MainContentServive
   v-for="(service, key) in services"
   :key="key"
+  :id="service.id"
   :cols="service.cols"
   :iconBox="service.iconBox"
   :titleClass="service.titleClass"
   :title="service.title"
   :description="service.description"
-  :descriptionClass="service.descriptionClass"/>
-  </div>
+  :descriptionClass="service.descriptionClass"
+  @updateService="updateService"
+  @deleteService="deleteService"/>
+  </div><br>
     <div class="row">
       <div class="col-12 col-xl-7">
         <div class="card card-body border-0 shadow mb-4">
@@ -80,7 +83,7 @@
                     class="form-control"
                     type="text"
                     placeholder="Entering Header Title of About Us"
-                    required
+                    v-model="title"
                   />
                 </div>
               </div>
@@ -95,16 +98,23 @@
                     class="form-control"
                     rows="4"
                     placeholder="Entering or Update Content of About Us "
+                    v-model="description"
                   ></textarea>
                 </div>
               </div>
             </div>
             <div class="mt-3">
-              <button
+              <button v-if="saveBtn"
                 class="btn btn-gray-800 mt-2 animate-up-2 bx-pull-right"
-                type="submit"
+                type="button" @click="submitService();"
               >
                 Save all
+              </button>
+              <button v-if="updateBtn"
+                class="btn btn-gray-800 mt-2 animate-up-2 bx-pull-right"
+                type="button" @click="updateServiceBtn();"
+              >
+                Update All
               </button>
             </div>
           </form>
@@ -142,16 +152,110 @@ export default {
   },
   data () {
     return {
-      services: []
+      title: '',
+      description: '',
+      services: [],
+      saveBtn: true,
+      updateBtn: false
     }
   },
   methods: {
+    updateService () {
+      this.title = this.$store.state.title
+      this.description = this.$store.state.description
+      this.updateBtn = true
+      this.saveBtn = false
+    },
+    async deleteService () {
+      const serviceID = this.$store.state.serviceId
+      try {
+        const response = await axios.delete(
+          'http://127.0.0.1:8000/api/delete-service/' + serviceID
+        )
+        alert(response.data)
+        this.saveBtn = true
+        this.updateBtn = false
+        this.getServiceData()
+      } catch (error) {
+        // if (error.response === undefined) {
+        //   this.$noty.error('somethinng wrong please contact support')
+        //   return
+        // }
+
+        // if (error.response.data.errors) {
+        //   this.$noty.error(error.response.data.errors[0])
+        //   return
+        // }
+        // if (error.response.data.message) {
+        //   this.$noty.error(error.response.data.message)
+        // }
+      }
+    },
+    async submitService () {
+      const data = {
+        title: this.title,
+        description: this.description
+      }
+      try {
+        const response = await axios.post(
+          'http://127.0.0.1:8000/api/create-service', data
+        )
+        alert(response.data)
+        this.title = ''
+        this.description = ''
+        this.getServiceData()
+      } catch (error) {
+        // if (error.response === undefined) {
+        //   this.$noty.error('somethinng wrong please contact support')
+        //   return
+        // }
+
+        // if (error.response.data.errors) {
+        //   this.$noty.error(error.response.data.errors[0])
+        //   return
+        // }
+        // if (error.response.data.message) {
+        //   this.$noty.error(error.response.data.message)
+        // }
+      }
+    },
+    async updateServiceBtn () {
+      const serviceID = this.$store.state.serviceId
+      const data = {
+        title: this.title,
+        description: this.description
+      }
+      try {
+        const response = await axios.post(
+          'http://127.0.0.1:8000/api/update-service/' + serviceID, data
+        )
+        alert(response.data)
+        this.title = ''
+        this.description = ''
+        this.saveBtn = true
+        this.updateBtn = false
+        this.getServiceData()
+      } catch (error) {
+        // if (error.response === undefined) {
+        //   this.$noty.error('somethinng wrong please contact support')
+        //   return
+        // }
+
+        // if (error.response.data.errors) {
+        //   this.$noty.error(error.response.data.errors[0])
+        //   return
+        // }
+        // if (error.response.data.message) {
+        //   this.$noty.error(error.response.data.message)
+        // }
+      }
+    },
     async getServiceData () {
       try {
         const response = await axios.get(
           'http://127.0.0.1:8000/api/list-services'
         )
-        this.services = response.data
+        this.services = response.data.services
         this.$Progress.finish()
       } catch (error) {
         // if (error.response === undefined) {
