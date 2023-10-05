@@ -51,9 +51,30 @@
       class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center py-4"
     >
       <div>
-        <button type="button" class="btn btn-secondary d-inline-flex align-items-center me-3">New</button>
+        <h2>Create Or Update About Section View</h2>
       </div>
     </div>
+    <div class="row gy-4">
+        <div class="col-lg-1"></div>
+        <div
+          class="col-lg-4"
+        >
+          <h3 data-aos="fade-up">{{ sectionAboutTitle }}</h3><span hidden>{{ sectionID }}</span>
+            <p data-aos="fade-up" data-aos-delay="100">
+              {{ sectionAboutContent }}
+            </p>
+            <div>
+                <button type="button" class="btn btn-success" @click="updatebtn();">Update</button>
+            </div>
+        </div>
+        <div class="col-lg-4 order-1 order-lg-2 hero-img">
+          <img
+            :src="imagePathAbout"
+            class="img-fluid animated"
+            alt=""
+          />
+        </div>
+      </div>
     <div class="row">
       <div class="col-12 col-xl-7">
         <div class="card card-body border-0 shadow mb-4">
@@ -66,6 +87,7 @@
                   <input
                     class="form-control"
                     type="text"
+                    v-model="title"
                     placeholder="Entering Header Title of About Us"
                     required
                   />
@@ -76,13 +98,16 @@
               <div class="col-sm-9 mb-3">
                 <div class="form-group">
                   <label for="address">Sub Header Content of About Us</label>
-                  <textarea class="form-control" rows="8" placeholder="Entering or Update Content of About Us "></textarea>
+                  <textarea class="form-control" rows="8" placeholder="Entering or Update Content of About Us " v-model="body"></textarea>
                 </div>
               </div>
             </div>
             <div class="mt-3">
-              <button class="btn btn-gray-800 mt-2 animate-up-2 bx-pull-right" type="submit">
+              <button v-if="submitBtn" class="btn btn-gray-800 mt-2 animate-up-2 bx-pull-right" type="button" @click="submitHeroSection();">
                 Save all
+              </button>
+              <button v-if="updateBtn" class="btn btn-gray-800 mt-2 animate-up-2 bx-pull-right" type="button" @click="updateHeroSection();">
+                Update all
               </button>
             </div>
           </form>
@@ -98,65 +123,101 @@
                     class="form-control"
                     type="file"
                     placeholder="No."
-                    required
+                    @change="handleFileChange"
                   />
                   <br>
                 </div>
-              <div class="d-flex align-items-center">
-                <div class="me-4">
-                  <!-- Avatar -->
-                  <img
-                    class="rounded avatar-xl"
-                    src="assets1/img/team/profile-picture-3.jpg"
-                    alt="change avatar"
-                  />
-                </div>
-                <div class="file-field">
-                  <div class="d-flex justify-content-xl-center ms-xl-3">
-                    <div class="d-flex">
-                      <svg
-                        class="icon text-gray-500 me-2"
-                        fill="currentColor"
-                        viewBox="0 0 20 20"
-                        xmlns="http://www.w3.org/2000/svg"
-                      >
-                        <path
-                          fill-rule="evenodd"
-                          d="M8 4a3 3 0 00-3 3v4a5 5 0 0010 0V7a1 1 0 112 0v4a7 7 0 11-14 0V7a5 5 0 0110 0v4a3 3 0 11-6 0V7a1 1 0 012 0v4a1 1 0 102 0V7a3 3 0 00-3-3z"
-                          clip-rule="evenodd"
-                        ></path>
-                      </svg>
-                      <input type="file" />
-                      <div class="d-md-block text-left">
-                        <div class="fw-normal text-dark mb-1">Choose Image</div>
-                        <div class="text-gray small">
-                          JPG, GIF or PNG. Max size of 800K
-                        </div>
-                      </div>
-                    </div>
-                  </div>
-                </div>
-              </div>
             </div>
           </div>
         </div>
       </div>
     </div>
-
-    <!-- <footer class="bg-white rounded shadow p-5 mb-4 mt-4">
-      <div class="row">
-        <div class="col-12 col-md-4 col-xl-6 mb-4 mb-md-0">
-          <p class="mb-0 text-center text-lg-start">
-            © 2023-<span class="current-year"></span>
-            <a
-              class="text-primary fw-normal"
-              href="https://themesberg.com"
-              target="_blank"
-              >BeOne Organization</a
-            >
-          </p>
-        </div>
-      </div>
-    </footer> -->
   </main>
 </template>
+<script>
+import axios from 'axios'
+export default {
+  data () {
+    return {
+      sectionID: '',
+      sectionAboutTitle: 'DAFDAFADF',
+      sectionAboutContent: 'ADFADFASDF',
+      imagePathAbout: 'assets/img/hero-img.svg',
+      title: '',
+      body: '',
+      image_path: '',
+      submitBtn: true,
+      updateBtn: false
+    }
+  },
+  methods: {
+    updatebtn () {
+      this.title = this.sectionAboutTitle
+      this.body = this.sectionAboutContent
+      this.submitBtn = false
+      this.updateBtn = true
+    },
+    handleFileChange (event) {
+      this.image_path = event.target.files[0]
+    },
+    async submitHeroSection () {
+      const formData = new FormData()
+      formData.append('title', this.title)
+      formData.append('body', this.body)
+      formData.append('image_path', this.image_path)
+      console.log('form data response:' + formData.title + formData.body + formData.image_path)
+      try {
+        const response = await axios.post(
+          'http://127.0.0.1:8000/api/create-about', formData, {
+            headers: {
+              'Content-Type': 'multipart/form-data'
+            }
+          }
+        )
+        alert(response.data)
+      } catch (error) {
+        alert(error.message)
+        console.log(error.message)
+      }
+    },
+    async updateHeroSection () {
+      const formData = new FormData()
+      formData.append('title', this.title)
+      formData.append('body', this.body)
+      formData.append('image_path', this.image_path)
+      console.log('form data response:' + formData.title + formData.body + formData.image_path)
+      try {
+        const response = await axios.post(
+          'http://127.0.0.1:8000/api/update-about/' + this.sectionID, formData, {
+            headers: {
+              'Content-Type': 'multipart/form-data'
+            }
+          }
+        )
+        alert(response.data)
+        this.retreiveHeroSection()
+      } catch (error) {
+        alert(error.message)
+        console.log(error.message)
+      }
+    },
+    async retreiveHeroSection () {
+      try {
+        const response = await axios.get(
+          'http://127.0.0.1:8000/api/list-about'
+        )
+        this.sectionID = response.data[0].id
+        this.sectionAboutTitle = response.data[0].title
+        this.sectionAboutContent = response.data[0].body
+        this.imagePathAbout = response.data[0].image_path
+      } catch (error) {
+        alert(error.message)
+        console.log(error.message)
+      }
+    }
+  },
+  mounted () {
+    this.retreiveHeroSection()
+  }
+}
+</script>
