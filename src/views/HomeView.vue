@@ -77,7 +77,7 @@
         <div class="col-lg-2"></div>
         <div class="col-lg-4 order-1 order-lg-2 hero-img">
           <img
-            src="assets/img/hero-img.svg"
+            :src="sectionHomeImage"
             class="img-fluid animated"
             alt=""
           />
@@ -96,18 +96,16 @@
             class="col-lg-5 d-flex align-items-center justify-content-center about-img"
           >
             <img
-              src="assets/img/about-img.svg"
+              :src="imageAboutSection"
               class="img-fluid"
               alt=""
               data-aos="zoom-in"
             />
           </div>
           <div class="col-lg-6 pt-5 pt-lg-0">
-            <h3 data-aos="fade-up">Voluptatem dignissimos provident quasi</h3>
+            <h3 data-aos="fade-up">{{ titleAboutSection }}</h3>
             <p data-aos="fade-up" data-aos-delay="100">
-              Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do
-              eiusmod tempor incididunt ut labore et dolore magna aliqua. Duis
-              aute irure dolor in reprehenderit
+              {{ bodyAboutSection }}
             </p>
             <!-- <div class="row">
               <div class="col-md-6" data-aos="fade-up" data-aos-delay="100">
@@ -1070,8 +1068,12 @@ export default {
   },
   data () {
     return {
+      titleAboutSection: '',
+      bodyAboutSection: '',
+      imageAboutSection: '',
       sectionHomeContent: '',
       sectionHomeTitle: '',
+      sectionHomeImage: 'assets/img/hero-img.svg',
       services: []
     }
   },
@@ -1084,6 +1086,10 @@ export default {
         this.services = response.data.services
         this.sectionHomeTitle = response.data.heroTitle
         this.sectionHomeContent = response.data.heroBody
+        this.sectionHomeImage = response.data.image_path
+        this.titleAboutSection = response.data.aboutTitle
+        this.bodyAboutSection = response.data.aboutBody
+        this.imageAboutSection = response.data.aboutImagePath
         this.$Progress.finish()
       } catch (error) {
         // if (error.response === undefined) {
