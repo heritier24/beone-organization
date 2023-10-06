@@ -34,6 +34,11 @@ const routes = [
     path: '/what-we-do',
     name: 'WhatWeDoView',
     component: () => import('../views/WhatWedo.vue')
+  },
+  {
+    path: '/clients-trusted-us-admin',
+    name: 'ClientsTrusted',
+    component: () => import('../views/ClientsTrusted.vue')
   }
 ]
 
