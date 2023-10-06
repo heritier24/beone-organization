@@ -58,8 +58,9 @@
         <LogoClients
         v-for="(logo, key) in logos"
         :key="key"
+        :logoID="logo.logoID"
         :colImage="logo.colImage"
-        :logoImage="logo.logoImage" />
+        :logoImage="logo.imagePathLogo" />
      </div>
     <div class="row">
       <div class="col-12 col-xl-5">
@@ -94,20 +95,7 @@ export default {
   data () {
     return {
       image_path: '',
-      logos: [
-        {
-          colImage: 'col-sm-2',
-          logoImage: 'assets/img/clients/client-1.png'
-        },
-        {
-          colImage: 'col-sm-2',
-          logoImage: 'assets/img/clients/client-1.png'
-        },
-        {
-          colImage: 'col-sm-2',
-          logoImage: 'assets/img/clients/client-1.png'
-        }
-      ]
+      logos: []
     }
   },
   methods: {
@@ -127,6 +115,7 @@ export default {
           }
         )
         alert(response.data)
+        this.retreiveHeroSection()
       } catch (error) {
         alert(error.message)
         console.log(error.message)
@@ -158,10 +147,7 @@ export default {
         const response = await axios.get(
           'http://127.0.0.1:8000/api/list-clients-trustedus'
         )
-        this.sectionID = response.data[0].id
-        this.sectionAboutTitle = response.data[0].title
-        this.sectionAboutContent = response.data[0].body
-        this.imagePathAbout = response.data[0].image_path
+        this.logos = response.data
       } catch (error) {
         alert(error.message)
         console.log(error.message)
