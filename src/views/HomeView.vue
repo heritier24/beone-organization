@@ -133,70 +133,13 @@
           <p>They trusted us</p>
         </div>
 
-        <div
-          class="clients-slider swiper"
-          data-aos="fade-up"
-          data-aos-delay="100"
-        >
-          <div class="swiper-wrapper align-items-center">
-            <div class="swiper-slide">
-              <img
-                src="assets/img/clients/client-1.png"
-                class="img-fluid"
-                alt=""
-              />
-            </div>
-            <div class="swiper-slide">
-              <img
-                src="assets/img/clients/client-2.png"
-                class="img-fluid"
-                alt=""
-              />
-            </div>
-            <div class="swiper-slide">
-              <img
-                src="assets/img/clients/client-3.png"
-                class="img-fluid"
-                alt=""
-              />
-            </div>
-            <div class="swiper-slide">
-              <img
-                src="assets/img/clients/client-4.png"
-                class="img-fluid"
-                alt=""
-              />
-            </div>
-            <div class="swiper-slide">
-              <img
-                src="assets/img/clients/client-5.png"
-                class="img-fluid"
-                alt=""
-              />
-            </div>
-            <div class="swiper-slide">
-              <img
-                src="assets/img/clients/client-6.png"
-                class="img-fluid"
-                alt=""
-              />
-            </div>
-            <div class="swiper-slide">
-              <img
-                src="assets/img/clients/client-7.png"
-                class="img-fluid"
-                alt=""
-              />
-            </div>
-            <div class="swiper-slide">
-              <img
-                src="assets/img/clients/client-8.png"
-                class="img-fluid"
-                alt=""
-              />
-            </div>
-          </div>
-          <div class="swiper-pagination"></div>
+        <div class="row">
+          <HomeClientsTruestedUs
+          v-for="(client, key) in clients"
+          :key="key"
+          :colImage="client.colImage"
+          :logoID="client.logoID"
+          :logoImage="client.imagePathLogo" />
         </div>
       </div>
     </section>
@@ -1061,10 +1004,12 @@
 </template>
 <script>
 import HomeServiceSection from '../components/HomeServiceSection.vue'
+import HomeClientsTruestedUs from '../components/HomeClientsTrusted.vue'
 import axios from 'axios'
 export default {
   components: {
-    HomeServiceSection
+    HomeServiceSection,
+    HomeClientsTruestedUs
   },
   data () {
     return {
@@ -1074,7 +1019,8 @@ export default {
       sectionHomeContent: '',
       sectionHomeTitle: '',
       sectionHomeImage: 'assets/img/hero-img.svg',
-      services: []
+      services: [],
+      clients: []
     }
   },
   methods: {
@@ -1090,6 +1036,7 @@ export default {
         this.titleAboutSection = response.data.aboutTitle
         this.bodyAboutSection = response.data.aboutBody
         this.imageAboutSection = response.data.aboutImagePath
+        this.clients = response.data.clientsTrustedUs
         this.$Progress.finish()
       } catch (error) {
         // if (error.response === undefined) {
