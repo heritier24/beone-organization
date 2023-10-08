@@ -60,7 +60,8 @@
         :key="key"
         :logoID="logo.logoID"
         :colImage="logo.colImage"
-        :logoImage="logo.imagePathLogo" />
+        :logoImage="logo.imagePathLogo"
+        @removeClientTrustedUs="removeClientTrustedUs" />
      </div>
     <div class="row">
       <div class="col-12 col-xl-5">
@@ -101,6 +102,19 @@ export default {
   methods: {
     handleFileChange (event) {
       this.image_path = event.target.files[0]
+    },
+    async removeClientTrustedUs () {
+      const logoID = this.$store.state.logoID
+      try {
+        const response = await axios.post(
+          'http://127.0.0.1:8000/api/remove-clients-trustedus/' + logoID
+        )
+        alert(response.data)
+        this.retreiveHeroSection()
+      } catch (error) {
+        alert(error.message)
+        console.log(error.message)
+      }
     },
     async submitLogo () {
       const formData = new FormData()
