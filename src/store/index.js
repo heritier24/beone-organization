@@ -4,7 +4,9 @@ export default createStore({
   state: {
     serviceId: '',
     title: '',
-    description: ''
+    description: '',
+    logoID: '',
+    testimonialID: ''
   },
   getters: {
   },
@@ -17,6 +19,12 @@ export default createStore({
     },
     setDescription (state, description) {
       state.description = description
+    },
+    setClientTrustedUsID (state, logoID) {
+      state.logoID = logoID
+    },
+    setTestimonialID (state, testimonialID) {
+      state.testimonialID = testimonialID
     }
   },
   actions: {
