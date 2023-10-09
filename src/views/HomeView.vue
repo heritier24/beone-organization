@@ -7,7 +7,10 @@
       <div class="logo">
         <h1 class="text-light">
           <a href="#" style="margin-left: 50px"
-            ><span>BeOne Organization</span></a
+            >
+            <img src="assets/img/beone organization logo.jpeg" alt="">
+            <!-- <span>BeOne Organization</span> -->
+            </a
           >
         </h1>
         <!-- Uncomment below if you prefer to use an image logo -->
@@ -513,93 +516,17 @@
         </div>
 
         <div class="row">
-          <div
-            class="col-xl-3 col-lg-4 col-md-6"
-            data-aos="zoom-in"
-            data-aos-delay="100"
-          >
-            <div class="member">
-              <img src="assets/img/team/team-1.jpg" class="img-fluid" alt="" />
-              <div class="member-info">
-                <div class="member-info-content">
-                  <h4>Walter White</h4>
-                  <span>Chief Executive Officer</span>
-                </div>
-                <div class="social">
-                  <a href=""><i class="bi bi-twitter"></i></a>
-                  <a href=""><i class="bi bi-facebook"></i></a>
-                  <a href=""><i class="bi bi-instagram"></i></a>
-                  <a href=""><i class="bi bi-linkedin"></i></a>
-                </div>
-              </div>
-            </div>
-          </div>
-
-          <div
-            class="col-xl-3 col-lg-4 col-md-6"
-            data-aos="zoom-in"
-            data-aos-delay="200"
-          >
-            <div class="member">
-              <img src="assets/img/team/team-2.jpg" class="img-fluid" alt="" />
-              <div class="member-info">
-                <div class="member-info-content">
-                  <h4>Sarah Jhonson</h4>
-                  <span>Product Manager</span>
-                </div>
-                <div class="social">
-                  <a href=""><i class="bi bi-twitter"></i></a>
-                  <a href=""><i class="bi bi-facebook"></i></a>
-                  <a href=""><i class="bi bi-instagram"></i></a>
-                  <a href=""><i class="bi bi-linkedin"></i></a>
-                </div>
-              </div>
-            </div>
-          </div>
-
-          <div
-            class="col-xl-3 col-lg-4 col-md-6"
-            data-aos="zoom-in"
-            data-aos-delay="300"
-          >
-            <div class="member">
-              <img src="assets/img/team/team-3.jpg" class="img-fluid" alt="" />
-              <div class="member-info">
-                <div class="member-info-content">
-                  <h4>William Anderson</h4>
-                  <span>CTO</span>
-                </div>
-                <div class="social">
-                  <a href=""><i class="bi bi-twitter"></i></a>
-                  <a href=""><i class="bi bi-facebook"></i></a>
-                  <a href=""><i class="bi bi-instagram"></i></a>
-                  <a href=""><i class="bi bi-linkedin"></i></a>
-                </div>
-              </div>
-            </div>
-          </div>
-
-          <div
-            class="col-xl-3 col-lg-4 col-md-6"
-            data-aos="zoom-in"
-            data-aos-delay="400"
-          >
-            <div class="member">
-              <img src="assets/img/team/team-4.jpg" class="img-fluid" alt="" />
-              <div class="member-info">
-                <div class="member-info-content">
-                  <h4>Amanda Jepson</h4>
-                  <span>Accountant</span>
-                </div>
-                <div class="social">
-                  <a href=""><i class="bi bi-twitter"></i></a>
-                  <a href=""><i class="bi bi-facebook"></i></a>
-                  <a href=""><i class="bi bi-instagram"></i></a>
-                  <a href=""><i class="bi bi-linkedin"></i></a>
-                </div>
-              </div>
-            </div>
-          </div>
+          <ContentTeamItem
+                v-for="(team, key) in teams"
+                :key="key"
+                :colsTeam="team.colsTeam"
+                :imageTeam="team.imagePathTeam"
+                :teamTitle="team.teamTitle"
+                :teamPosition="team.teamPosition"
+                :facebookLink="team.facebookLink"
+                :instagramLink="team.instagramLink"
+                :linkedlnLink="team.linkedlnLink"
+                :twitterLink="team.twitterLink" />
         </div>
       </div>
     </section>
@@ -747,6 +674,7 @@
       <div class="container">
         <div class="row">
           <div class="col-lg-3 col-md-6 footer-contact">
+             <!-- <img src="assets/img/beone organization logo.jpeg" alt=""> -->
             <h3>BeOne Organization</h3>
             <p>
               A108 Adam Street <br />
@@ -846,12 +774,14 @@
 import HomeServiceSection from '../components/HomeServiceSection.vue'
 import HomeClientsTruestedUs from '../components/HomeClientsTrusted.vue'
 import HomeTestimonialSectionItem from '../components/HomeTestimonialSectionItem.vue'
+import ContentTeamItem from '../components/ContentTeamItem.vue'
 import axios from 'axios'
 export default {
   components: {
     HomeServiceSection,
     HomeClientsTruestedUs,
-    HomeTestimonialSectionItem
+    HomeTestimonialSectionItem,
+    ContentTeamItem
   },
   data () {
     return {
@@ -863,7 +793,8 @@ export default {
       sectionHomeImage: 'assets/img/hero-img.svg',
       services: [],
       clients: [],
-      testimonials: []
+      testimonials: [],
+      teams: []
     }
   },
   methods: {
@@ -881,6 +812,7 @@ export default {
         this.imageAboutSection = response.data.aboutImagePath
         this.clients = response.data.clientsTrustedUs
         this.testimonials = response.data.testimonialSection
+        this.teams = response.data.teamsSection
         this.$Progress.finish()
       } catch (error) {
         // if (error.response === undefined) {
