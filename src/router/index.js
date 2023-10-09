@@ -44,6 +44,11 @@ const routes = [
     path: '/testimonials-admin',
     name: 'TestimonialsAdmin',
     component: () => import('../views/TestimonialsAdmin.vue')
+  },
+  {
+    path: '/team-admin',
+    name: 'TeamAdmin',
+    component: () => import('../views/TeamsAdmin.vue')
   }
 ]
 
